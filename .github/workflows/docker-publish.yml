@@ -1,0 +1,92 @@
+name: Docker build
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!renovate/*'
+    tags:
+      - '*'
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  list_containers:
+    name: List containers to build
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.MATRIX }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - id: set-matrix
+        name: Generate containers list with parameters
+        working-directory: containers
+        run: |
+          {
+            echo "MATRIX<<9743a66f914cc249efca164485a19c5c"
+            for d in * ; do 
+              echo "- container: \"$d\""
+              # extract additional properties from Dockerfiles
+              [ -f "$d/Dockerfile" ] && \
+                sed -En 's/^#\s+((\w|-)+):\s+(.+)$/  "\1": "\3"/p' "$d/Dockerfile"
+            done | yq -p yaml -o json -I 0 .
+            echo 9743a66f914cc249efca164485a19c5c
+          } >> "$GITHUB_OUTPUT"
+
+  build:
+    name: "Build container: ${{ matrix.container }}"
+    runs-on: ubuntu-latest
+    needs: list_containers
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+    strategy:
+      matrix:
+        include: ${{ fromJSON(needs.list_containers.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Workaround: https://github.com/docker/build-push-action/issues/461
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.container }}
+          labels: |
+            org.opencontainers.image.title=${{ matrix.container }}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v5
+        with:
+          context: containers/${{ matrix.container }}
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
