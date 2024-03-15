@@ -1,9 +1,9 @@
-# platforms: linux/amd64,linux/arm64
+# platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/386
 FROM        alpine:3.19.1 AS patch
 ARG         SYNCREPO_VERSION=4fe427a2
 
 RUN         apk add --no-cache \
-              patch && \
+              patch
 
 ADD         --chmod=755 \
               https://gitlab.archlinux.org/archlinux/infrastructure/-/raw/${SYNCREPO_VERSION}/roles/syncrepo/files/syncrepo-template.sh \
