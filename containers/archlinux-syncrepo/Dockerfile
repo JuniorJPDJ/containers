@@ -1,6 +1,8 @@
 # platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/386
 FROM        alpine:3.19.1 AS patch
+
 ARG         SYNCREPO_VERSION=4fe427a2
+
 
 RUN         apk add --no-cache \
               patch
@@ -13,7 +15,16 @@ COPY        syncrepo.patch /
 RUN         patch /syncrepo /syncrepo.patch
 
 
+
 FROM        alpine:3.19.1
+
+# renovate: datasource=repology depName=alpine_3_19/rsync versioning=loose
+ARG         RSYNC_VERSION="3.2.7-r4"
+# renovate: datasource=repology depName=alpine_3_19/curl versioning=loose
+ARG         CURL_VERSION="8.5.0-r0"
+# renovate: datasource=repology depName=alpine_3_19/bash versioning=loose
+ARG         BASH_VERSION="5.2.21-r0"
+
 
 ENV         TARGETDIR=out
 ENV         BWLIMIT=0
@@ -23,7 +34,10 @@ ENV         LAST_UPDATE_URL=
 VOLUME      /var/mirror
 
 RUN         apk add --no-cache \
-              rsync curl bash && \
+              rsync=${RSYNC_VERSION} \
+              curl=${CURL_VERSION} \
+              bash=${BASH_VERSION} \
+            && \
             rm -rf /var/cache/apk/* && \
             touch /var/lock/syncrepo.lck -t 0001010000 && \
             chmod 666 /var/lock/syncrepo.lck && \
@@ -32,7 +46,6 @@ RUN         apk add --no-cache \
 COPY        crontab /etc/crontabs/nobody
 COPY        mirror_healthcheck.sh /bin/
 COPY        --from=patch /syncrepo /bin/syncrepo
-
 
 HEALTHCHECK CMD /bin/mirror_healthcheck.sh
 CMD         mkdir -p "/var/mirror/$TARGETDIR" && \
