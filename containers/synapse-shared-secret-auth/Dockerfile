@@ -2,7 +2,7 @@
 FROM  ghcr.io/element-hq/synapse:v1.102.0
 
 # renovate: datasource=github-tags depName=devture/matrix-synapse-shared-secret-auth
-ARG   SHARED_SECRET_AUTH_VERSION="2.0.2"
+ARG   SHARED_SECRET_AUTH_VERSION="2.0.3"
 
 ARG   DEBIAN_FRONTEND=noninteractive
 
