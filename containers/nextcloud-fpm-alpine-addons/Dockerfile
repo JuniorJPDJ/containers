@@ -1,4 +1,4 @@
-FROM nextcloud:26.0.11-fpm-alpine
+FROM nextcloud:26.0.12-fpm-alpine
 
 COPY fpm.conf /usr/local/etc/php-fpm.d/z_nextcloud_fpm.conf
 COPY php.ini /usr/local/etc/php/conf.d/z_nextcloud_php.ini
