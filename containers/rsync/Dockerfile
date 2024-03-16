@@ -1,4 +1,4 @@
-# platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/386
+# platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x
 FROM  alpine:3.19.1
 
 # renovate: datasource=repology depName=alpine_3_19/rsync versioning=loose
