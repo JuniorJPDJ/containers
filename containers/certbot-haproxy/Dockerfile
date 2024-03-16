@@ -8,5 +8,5 @@ COPY        crontab /etc/crontabs/root
 COPY        cp_certs.sh /opt/
 COPY        start.sh /opt/
 
-ENTRYPOINT  [ "/opt/start.sh" ]
+ENTRYPOINT  ["/opt/start.sh"]
 CMD         []
