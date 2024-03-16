@@ -12,10 +12,10 @@ ARG         GETTEXT_VERSION="0.22.3-r0"
 
 USER        root
 
-COPY        custom_entrypoint.sh /custom_entrypoint.sh
+COPY        --chmod=755 \
+              custom_entrypoint.sh /custom_entrypoint.sh
 
-RUN         chmod +x /custom_entrypoint.sh && \
-            apk add --no-cache \
+RUN         apk add --no-cache \
               imagemagick=${IMAGEMAGICK_VERSION} \
               ghostscript-fonts=${GHOSTSCRIPT_FONTS_VERSION} \
               bash=${BASH_VERSION} \
