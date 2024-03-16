@@ -1,5 +1,5 @@
 # platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6,linux/386,linux/ppc64le,linux/s390x
-FROM  nextcloud:26.0.12-fpm-alpine
+FROM  nextcloud:27.1.7-fpm-alpine
 
 # renovate: datasource=repology depName=alpine_3_19/ffmpeg versioning=loose
 ARG   FFMPEG_VERSION="6.1.1-r0"
