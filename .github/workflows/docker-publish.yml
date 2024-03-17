@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - '*'
-    tags:
-      - '*'
+  pull_request:
+    types: [opened, synchronize]
   workflow_dispatch:
 
 env:
@@ -25,6 +25,14 @@ jobs:
         id: set-matrix
         working-directory: containers
         run: |
+          echo "Action: ${{ github.event.action }}"
+          echo "Base ref: ${{ github.event.base_ref }}"
+          echo "Before: ${{ github.event.before }}"
+          echo "After: ${{ github.event.after }}"
+          echo "Pull request base ref: ${{ github.event.pull_request.base.ref }}"
+          echo "Pull request base sha: ${{ github.event.pull_request.base.sha }}"
+          echo "Pull request head ref: ${{ github.event.pull_request.head.ref }}"
+          echo "Pull request head sha: ${{ github.event.pull_request.head.sha }}"
           {
             echo "MATRIX<<9743a66f914cc249efca164485a19c5c"
             for d in * ; do 
