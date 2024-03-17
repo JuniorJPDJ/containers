@@ -57,6 +57,7 @@ jobs:
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
     strategy:
+      fail-fast: false
       matrix:
         include: ${{ fromJSON(needs.list_containers.outputs.matrix) }}
 
