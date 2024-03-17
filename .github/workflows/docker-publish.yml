@@ -15,9 +15,6 @@ jobs:
   list_containers:
     name: List containers to build
     runs-on: ubuntu-latest
-    if: >-
-      (github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000') ||
-      github.event_name != 'push'
     outputs:
       matrix: ${{ steps.set-matrix.outputs.MATRIX }}
     steps:
