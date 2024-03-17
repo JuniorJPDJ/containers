@@ -27,18 +27,26 @@ jobs:
         id: set-matrix
         working-directory: containers
         run: |
-          echo "Event: ${{ github.event_name }}"
-          echo "Action: ${{ github.event.action }}"
-          echo "Base ref: ${{ github.event.base_ref }}"
-          echo "Before: ${{ github.event.before }}"
-          echo "After: ${{ github.event.after }}"
-          echo "Pull request base ref: ${{ github.event.pull_request.base.ref }}"
-          echo "Pull request base sha: ${{ github.event.pull_request.base.sha }}"
-          echo "Pull request head ref: ${{ github.event.pull_request.head.ref }}"
-          echo "Pull request head sha: ${{ github.event.pull_request.head.sha }}"
+          GIT_DIFF_ENABLED=0
+
+          if [ '${{ github.event_name }}' = 'push' ] ; then
+            GIT_DIFF_ENABLED=1
+            GIT_DIFF_BASE='${{ github.event.before }}'
+            GIT_DIFF_HEAD='${{ github.event.after }}'
+          elif [ '${{ github.event_name }}' = 'pull_request' ] ; then
+            GIT_DIFF_ENABLED=1
+            GIT_DIFF_BASE='${{ github.event.pull_request.base.sha }}'
+            GIT_DIFF_HEAD='${{ github.event.pull_request.head.sha }}'
+          done
+
           {
             echo "MATRIX<<9743a66f914cc249efca164485a19c5c"
-            for d in * ; do 
+            for d in * ; do
+              # check if directory changed and skip if not
+              [ $GIT_DIFF_ENABLED = 1 ] && \
+                git diff -s --exit-code "${GIT_DIFF_BASE}..${GIT_DIFF_HEAD}" "$d" && \
+                continue
+
               if [ -f "$d/Dockerfile" ] ; then
                 echo "- container: \"$d\""
                 # extract additional properties from Dockerfiles
