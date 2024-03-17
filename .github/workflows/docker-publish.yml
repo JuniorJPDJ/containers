@@ -25,6 +25,7 @@ jobs:
         id: set-matrix
         working-directory: containers
         run: |
+          echo "Event: ${{ github.event_name }}"
           echo "Action: ${{ github.event.action }}"
           echo "Base ref: ${{ github.event.base_ref }}"
           echo "Before: ${{ github.event.before }}"
