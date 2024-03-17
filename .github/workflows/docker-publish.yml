@@ -3,9 +3,9 @@ name: Docker build
 on:
   push:
     branches:
-      - '*'
-    tags:
-      - '*'
+      - 'master'
+  pull_request:
+    types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 env:
@@ -20,20 +20,46 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
 
       - name: Generate containers list with parameters
         id: set-matrix
         working-directory: containers
         run: |
+          GIT_DIFF_ENABLED=0
+
+          if [ '${{ github.event_name }}' = 'push' ] ; then
+            GIT_DIFF_ENABLED=1
+            GIT_DIFF_BASE='${{ github.event.before }}'
+            GIT_DIFF_HEAD='${{ github.event.after }}'
+          elif [ '${{ github.event_name }}' = 'pull_request' ] ; then
+            GIT_DIFF_ENABLED=1
+            GIT_DIFF_BASE='${{ github.event.pull_request.base.sha }}'
+            GIT_DIFF_HEAD='${{ github.event.pull_request.head.sha }}'
+          fi
+
           {
             echo "MATRIX<<9743a66f914cc249efca164485a19c5c"
-            for d in * ; do 
-              if [ -f "$d/Dockerfile" ] ; then
-                echo "- container: \"$d\""
-                # extract additional properties from Dockerfiles
-                sed -En 's/^#\s+((\w|-)+):\s+(.+)$/  "\1": "\3"/p' "$d/Dockerfile"
-              fi
-            done | yq -p yaml -o json -I 0 .
+            {
+              NO_CONTAINERS=1
+              for d in * ; do
+                # check if directory changed and skip if not
+                [ $GIT_DIFF_ENABLED = 1 ] && \
+                  git diff -s --exit-code "${GIT_DIFF_BASE}..${GIT_DIFF_HEAD}" "$d" && \
+                  continue
+
+                if [ -f "$d/Dockerfile" ] ; then
+                  echo "- container: \"$d\""
+                  # extract additional properties from Dockerfiles
+                  sed -En 's/^#\s+((\w|-)+):\s+(.+)$/  "\1": "\3"/p' "$d/Dockerfile"
+                  NO_CONTAINERS=0
+                fi
+
+              done
+              [ $NO_CONTAINERS = 1 ] && echo '[]'
+            } | yq -p yaml -o json -I 0 .
+
             echo 9743a66f914cc249efca164485a19c5c
           } >> "$GITHUB_OUTPUT"
 
@@ -47,7 +73,9 @@ jobs:
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
+    if: needs.list_containers.outputs.matrix != '[]'
     strategy:
+      fail-fast: false
       matrix:
         include: ${{ fromJSON(needs.list_containers.outputs.matrix) }}
 
@@ -86,7 +114,7 @@ jobs:
           tags: |
             type=schedule
             type=ref,event=branch
-            type=ref,event=tag
+            type=ref,event=pr
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push Docker image
