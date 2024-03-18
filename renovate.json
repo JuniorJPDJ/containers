@@ -19,7 +19,7 @@
   ],
   "packageRules": [
     {
-      "matchFileNames": ["^containers/*/**"],
+      "matchFileNames": ["containers/*/**"],
       "additionalBranchPrefix": "{{parentDir}}-",
       "semanticCommitScope": "{{parentDir}}"
     }
