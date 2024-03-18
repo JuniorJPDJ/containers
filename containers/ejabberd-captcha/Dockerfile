@@ -1,5 +1,5 @@
 # platforms: linux/amd64
-FROM        ejabberd/ecs:24.02
+FROM        ejabberd/ecs:24.02@sha256:4a059c93c4b20ca4fd13816e2afd0d6c2716a9519c827b65a989a1213aadd807
 
 # renovate: datasource=repology depName=alpine_3_19/imagemagick versioning=loose
 ARG         IMAGEMAGICK_VERSION="7.1.1.26-r0"

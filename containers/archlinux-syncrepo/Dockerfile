@@ -1,5 +1,5 @@
 # platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x
-FROM        alpine:3.19.1 AS patch
+FROM        alpine:3.19.1@sha256:c5b1261d6d3e43071626931fc004f70149baeba2c8ec672bd4f27761f8e1ad6b AS patch
 
 ARG         SYNCREPO_VERSION=4fe427a2
 
@@ -16,7 +16,7 @@ RUN         patch /syncrepo /syncrepo.patch
 
 
 
-FROM        alpine:3.19.1
+FROM        alpine:3.19.1@sha256:c5b1261d6d3e43071626931fc004f70149baeba2c8ec672bd4f27761f8e1ad6b
 
 # renovate: datasource=repology depName=alpine_3_19/rsync versioning=loose
 ARG         RSYNC_VERSION="3.2.7-r4"
