@@ -6,7 +6,7 @@ ARG         IMAGEMAGICK_VERSION="7.0.1.26-r0"
 # renovate: datasource=repology depName=alpine_3_19/ghostscript-fonts versioning=loose
 ARG         GHOSTSCRIPT_FONTS_VERSION="8.10-r5"
 # renovate: datasource=repology depName=alpine_3_19/bash versioning=loose
-ARG         BASH_VERSION="5.2.11-r0"
+ARG         BASH_VERSION="5.2.21-r0"
 # renovate: datasource=repology depName=alpine_3_19/gettext versioning=loose
 ARG         GETTEXT_VERSION="0.22.3-r0"
 
