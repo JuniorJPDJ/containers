@@ -1,5 +1,5 @@
 # platforms: linux/amd64,linux/arm64
-FROM  ghcr.io/element-hq/synapse:v1.102.0@sha256:6c1ae2e6d04de4545e9e006b678cb2f8bf2880e5c476d453ea3ca08a3d9472d6
+FROM  ghcr.io/element-hq/synapse:v1.103.0@sha256:b7fde4f614b5d97952bc998281a876dfacaeee993f5e31081eeeac1c7ceb73f5
 
 # renovate: datasource=github-tags depName=devture/matrix-synapse-shared-secret-auth
 ARG   SHARED_SECRET_AUTH_VERSION="2.0.3"
