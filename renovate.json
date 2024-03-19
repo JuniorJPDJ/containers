@@ -22,6 +22,10 @@
       "matchFileNames": ["containers/*/**"],
       "additionalBranchPrefix": "{{parentDir}}-",
       "semanticCommitScope": "{{parentDir}}"
+    },
+    {
+      "matchDatasources": ["repology"],
+      "matchPackagePatterns": ["^(?<groupName>.*?)/.*"]
     }
   ]
 }
