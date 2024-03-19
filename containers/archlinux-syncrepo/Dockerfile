@@ -23,7 +23,7 @@ ARG         RSYNC_VERSION="3.2.6-r4"
 # renovate: datasource=repology depName=alpine_3_19/curl versioning=loose
 ARG         CURL_VERSION="8.4.9-r0"
 # renovate: datasource=repology depName=alpine_3_19/bash versioning=loose
-ARG         BASH_VERSION="5.1.21-r0"
+ARG         BASH_VERSION="5.2.21-r0"
 
 
 ENV         TARGETDIR=out
