@@ -2,7 +2,7 @@
 FROM        ejabberd/ecs:24.02@sha256:4a059c93c4b20ca4fd13816e2afd0d6c2716a9519c827b65a989a1213aadd807
 
 # renovate: datasource=repology depName=alpine_3_19/imagemagick versioning=loose
-ARG         IMAGEMAGICK_VERSION="7.0.1.26-r0"
+ARG         IMAGEMAGICK_VERSION="7.1.1.26-r0"
 # renovate: datasource=repology depName=alpine_3_19/ghostscript-fonts versioning=loose
 ARG         GHOSTSCRIPT_FONTS_VERSION="8.10-r5"
 # renovate: datasource=repology depName=alpine_3_19/bash versioning=loose
