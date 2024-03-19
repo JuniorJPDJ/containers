@@ -4,7 +4,7 @@ FROM  nextcloud:28.0.3-fpm-alpine@sha256:0e2edb26be9a34715380c0981ff155c3d565ef5
 # renovate: datasource=repology depName=alpine_3_19/ffmpeg versioning=loose
 ARG   FFMPEG_VERSION="6.1.0-r0"
 # renovate: datasource=repology depName=alpine_3_19/imagemagick versioning=loose
-ARG   IMAGEMAGICK_VERSION="7.0.1.26-r0"
+ARG   IMAGEMAGICK_VERSION="7.1.1.26-r0"
 # renovate: datasource=repology depName=alpine_3_19/procps-ng versioning=loose
 ARG   PROCPS_NG_VERSION="1.0.4-r0"
 # renovate: datasource=repology depName=alpine_3_19/samba-client versioning=loose
