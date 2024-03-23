@@ -1,6 +1,6 @@
 --- syncrepo-template.sh
 +++ syncrepo
-@@ -27,7 +27,7 @@
+@@ -27,27 +27,27 @@
  # lot of traffic.
  
  # Directory where the repo is stored locally. Example: /srv/repo
@@ -8,8 +8,9 @@
 +target="/var/mirror/$TARGETDIR"
  
  # Lockfile path
- lock="/var/lock/syncrepo.lck"
-@@ -35,19 +35,19 @@
+-lock="/var/lock/syncrepo.lck"
++lock="/var/mirror/syncrepo.lck"
+ 
  # If you want to limit the bandwidth used by rsync set this.
  # Use 0 to disable the limit.
  # The default unit is KiB (see man rsync /--bwlimit for more)
