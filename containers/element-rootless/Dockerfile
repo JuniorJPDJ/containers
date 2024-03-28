@@ -1,5 +1,5 @@
 # platforms: linux/amd64,linux/arm64
-FROM  vectorim/element-web:v1.11.62@sha256:5845a8112dd814ce6bd55700496c633cf5ca67484e97567cf9ce5e40776ea3e7
+FROM  vectorim/element-web:v1.11.63@sha256:a266be2c91a374da748585cb8101e4803cd596709a89dcbfc447c4188566c62f
 
 # make it run on non-root
 RUN   mkdir -p /var/log/nginx /var/cache/nginx /var/run/nginx && \
