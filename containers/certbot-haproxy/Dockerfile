@@ -1,5 +1,5 @@
 # platforms: linux/amd64,linux/arm64,linux/arm/v6
-FROM        certbot/certbot:v2.9.0@sha256:953b5daac63b14e4f8b77aacf4831f916faac836c67cd12fcc6408201554962e
+FROM        certbot/certbot:v2.10.0@sha256:8d785998c367a7c1058f9b8878fce4c728c725b4ba0fef57ed5322ef38b82613
 
 
 VOLUME      /etc/certs
