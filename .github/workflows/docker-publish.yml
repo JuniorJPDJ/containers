@@ -87,10 +87,21 @@ jobs:
         id: props
         run: |
           PLATFORMS_DEFAULT="linux/amd64,linux/arm64"
+          APP_VERSION_DEFAULT="0.1.0"
+          REVISION_DEFAULT="1"
 
           PLATFORMS="${{ matrix.platforms }}"
+          APP_VERSION="${{ matrix.app_version }}"
+          REVISION="${{ matrix.revision }}"
+
+          platforms="${PLATFORMS:-"${PLATFORMS_DEFAULT}"}"
+          app_version="${APP_VERSION:-"${APP_VERSION_DEFAULT}"}"
+          revision="${REVISION:-"${REVISION_DEFAULT}"}"
           {
-            echo "platforms=${PLATFORMS:-"${PLATFORMS_DEFAULT}"}"
+            echo "platforms=$platforms"
+            echo "app_version=$app_version"
+            echo "revision=$revision"
+            echo "version=${app_version}-r${revision}"
           } >> "$GITHUB_OUTPUT"
 
       # Workaround: https://github.com/docker/build-push-action/issues/461
@@ -111,11 +122,15 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.container }}
           labels: |
             org.opencontainers.image.title=${{ matrix.container }}
+            org.opencontainers.image.description=${{ matrix.description }}
           tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
+            type=ref,event=branch,priority=1990
+            type=ref,event=pr,2999
             type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,enable={{is_default_branch}},value=${{ steps.props.outputs.version }},priority=1999
+            type=raw,enable={{is_default_branch}},value=${{ steps.props.outputs.app_version }},priority=1998
+            type=semver,enable={{is_default_branch}},value=${{ steps.props.outputs.app_version }},pattern={{major}}.{{minor}},priority=1997
+            type=semver,enable={{is_default_branch}},value=${{ steps.props.outputs.app_version }},pattern={{major}},priority=1996
 
       - name: Build and push Docker image
         id: build-and-push

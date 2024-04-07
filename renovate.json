@@ -10,7 +10,7 @@
   "prHourlyLimit": 0,
   "packageRules": [
     {
-      "matchFileNames": ["containers/*/**"],
+      "matchFileNames": ["containers/*/*"],
       "additionalBranchPrefix": "{{parentDir}}-",
       "semanticCommitScope": "{{parentDir}}"
     },

@@ -1,4 +1,7 @@
 # platforms: linux/amd64
+# app_version: 24.02
+# revision: 1
+# description: Robust, Ubiquitous and Massively Scalable Messaging Platform (XMPP, MQTT, SIP Server) with captcha scripts support and replacement of placeholders in config file with environment variables
 FROM        ejabberd/ecs:24.02@sha256:4a059c93c4b20ca4fd13816e2afd0d6c2716a9519c827b65a989a1213aadd807
 
 # renovate: datasource=repology depName=alpine_3_19/imagemagick versioning=loose

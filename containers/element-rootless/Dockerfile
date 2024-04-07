@@ -1,4 +1,7 @@
 # platforms: linux/amd64,linux/arm64
+# app_version: 1.11.63
+# revision: 1
+# description: Matrix Element Web client modified to run without root privileges
 FROM  vectorim/element-web:v1.11.63@sha256:a266be2c91a374da748585cb8101e4803cd596709a89dcbfc447c4188566c62f
 
 # make it run on non-root
