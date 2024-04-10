@@ -19,7 +19,7 @@ ARG   IMAP_VERSION="2007f-r15"
 # renovate: datasource=repology depName=alpine_3_19/krb5-dev versioning=loose
 ARG   KRB5_VERSION="1.21.2-r0"
 # renovate: datasource=repology depName=alpine_3_19/openssl-dev versioning=loose
-ARG   OPENSSL_VERSION="3.1.4-r5"
+ARG   OPENSSL_VERSION="3.1.4-r6"
 # renovate: datasource=repology depName=alpine_3_19/bzip2-dev versioning=loose
 ARG   BZIP2_VERSION="1.0.8-r6"
 
