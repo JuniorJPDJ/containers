@@ -22,11 +22,13 @@
   "prHourlyLimit": 0,
   "packageRules": [
     {
+      "description": "Treat every container as separate group with separate scope and branch prefix",
       "matchFileNames": ["containers/*/*"],
       "additionalBranchPrefix": "{{parentDir}}-",
       "semanticCommitScope": "{{parentDir}}"
     },
     {
+      "description": "Group OS packages to avoid build errors if more than one package is updated and previous version is not present in repo already",
       "matchDatasources": ["repology"],
       "groupName": "OS Packages"
     },
@@ -42,6 +44,21 @@
         "containers/*/*"
       ],
       "pinDigests": false
+    },
+    {
+      "description": "Update container revisions",
+      "matchFileNames": [
+        "containers/*/*"
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "bash scripts/renovate_revision.sh '{{{parentDir}}}'"
+        ],
+        "fileFilters": [
+          "containers/*/*"
+        ],
+        "executionMode": "branch"
+      }
     }
   ]
 }
