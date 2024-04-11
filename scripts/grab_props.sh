@@ -1,7 +1,7 @@
 #!/bin/bash
-GIT_DIFF_ENABLED=$1
-GIT_DIFF_BASE=$2
-GIT_DIFF_HEAD=$3
+GIT_DIFF_ENABLED="$1"
+GIT_DIFF_BASE="$2"
+GIT_DIFF_HEAD="$3"
 
 
 cd containers
@@ -14,9 +14,9 @@ for d in * ; do
     continue
 
   if [ -f "$d/Dockerfile" ] ; then
-    echo "- container: \"$d\""
+    echo "- \"container\": \"$d\""
     # extract additional properties from Dockerfiles
-    sed -En 's/^#\s+((\w|-)+):\s+(.+)$/  "\1": "\3"/p' "$d/Dockerfile"
+    sed -En 's/^#\s+((\w|-)+):\s+(.+)$/  "\1": "\3"/p' "$d/Dockerfile" | grep -v '"renovate":'
     NO_CONTAINERS=0
   fi
 
