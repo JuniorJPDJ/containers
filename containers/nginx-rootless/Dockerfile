@@ -1,4 +1,5 @@
 # platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x
+# renovate: datasource=docker depName=nginx extractVersion=^(?<version>.*)-alpine$
 # app_version: 1.25.4
 # revision: 1
 # description: Nginx image modified to run without root privileges

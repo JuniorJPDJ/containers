@@ -1,4 +1,5 @@
 # platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x
+# renovate: datasource=repology depName=alpine_3_19/rsync versioning=loose extractVersion=^(?<version>.*)-r\d+$
 # app_version: 3.2.7
 # revision: 4
 # description: Rsync running in cron, with ability to be just used as rsync when running with overwritten command
