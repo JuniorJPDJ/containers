@@ -16,7 +16,7 @@ for d in * ; do
   if [ -f "$d/Dockerfile" ] ; then
     echo "- container: \"$d\""
     # extract additional properties from Dockerfiles
-    sed -En 's/^#\s+((\w|-)+):\s+(.+)$/  "\1": "\3"/p' "$d/Dockerfile"
+    sed -En 's/^#\s+((\w|-)+):\s+(.+)$/  "\1": "\3"/p' "$d/Dockerfile" | grep -v 'renovate'
     NO_CONTAINERS=0
   fi
 
