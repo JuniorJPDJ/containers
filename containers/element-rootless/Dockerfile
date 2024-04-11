@@ -1,4 +1,5 @@
 # platforms: linux/amd64,linux/arm64
+# renovate: datasource=docker depName=vectorim/element-web extractVersion=^v(?<version>.*)$
 # app_version: 1.11.64
 # revision: 1
 # description: Matrix Element Web client modified to run without root privileges

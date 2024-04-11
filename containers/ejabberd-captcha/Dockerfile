@@ -1,4 +1,5 @@
 # platforms: linux/amd64
+# renovate: datasource=docker depName=ejabberd/ecs
 # app_version: 24.02
 # revision: 1
 # description: Robust, Ubiquitous and Massively Scalable Messaging Platform (XMPP, MQTT, SIP Server) with captcha scripts support and replacement of placeholders in config file with environment variables

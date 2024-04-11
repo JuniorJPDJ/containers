@@ -1,4 +1,5 @@
 # platforms: linux/amd64,linux/arm64
+# renovate: datasource=docker depName=ghcr.io/element-hq/synapse extractVersion=^v(?<version>.*)$
 # app_version: 1.104.0
 # revision: 1
 # description: Matrix Synapse homeserver with matrix-synapse-shared-secret-auth preinstalled

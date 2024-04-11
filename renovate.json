@@ -7,6 +7,18 @@
     "docker:enableMajor",
     "regexManagers:dockerfileVersions"
   ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$",
+        "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"
+      ],
+      "matchStrings": [
+        "#\\s+renovate:\\s+datasource=(?<datasource>[a-z-.]+?)\\s+depName=(?<depName>[^\\s]+?)(?:\\s+(lookupName|packageName)=(?<packageName>[^\\s]+?))?(?:\\s+versioning=(?<versioning>[^\\s]+?))?(?:\\s+extractVersion=(?<extractVersion>[^\\s]+?))?(?:\\s+registryUrl=(?<registryUrl>[^\\s]+?))?\\n#\\s+app_version:\\s+(?<currentValue>.+?)\\s"
+      ]
+    }
+  ],
   "prHourlyLimit": 0,
   "packageRules": [
     {
@@ -17,6 +29,19 @@
     {
       "matchDatasources": ["repology"],
       "groupName": "OS Packages"
+    },
+    {
+      "description": "Disable Docker digest pinning for regex managers",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchFileNames": [
+        "containers/*/*"
+      ],
+      "pinDigests": false
     }
   ]
 }

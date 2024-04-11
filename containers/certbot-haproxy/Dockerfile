@@ -1,4 +1,5 @@
 # platforms: linux/amd64,linux/arm64,linux/arm/v6
+# renovate: datasource=docker depName=certbot/certbot extractVersion=^v(?<version>.*)$
 # app_version: 2.10.0
 # revision: 1
 # description: Let's encrypt certbot with haproxy compatibility script and cron renew runner
