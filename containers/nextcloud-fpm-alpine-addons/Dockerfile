@@ -3,7 +3,7 @@
 # app_version: 28.0.0
 # revision: 2
 # description: Nextcloud fpm alpine image with addons (imagemagick, smb support, imap support, kerberos support)
-FROM  nextcloud:28.0.0-fpm-alpine
+FROM  nextcloud:28.0.0-fpm-alpine@sha256:6645f1c7c21d713e41abd438131d44f1acc231c2218ba2748d084d934ebf051f
 
 # renovate: datasource=repology depName=alpine_3_19/ffmpeg versioning=loose
 ARG   FFMPEG_VERSION="6.1.1-r0"
