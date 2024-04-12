@@ -31,6 +31,9 @@ for d in * ; do
     if [ "$base_appver" == "$head_appver" -a "$base_rev" == "$head_rev" ] ; then
       echo -e "[Container $d]: \e[31mapp_version and revision not changed, this should be fixed!\e[0m"
       EXIT_CODE=2
+    elif [ "$base_appver" != "$head_appver" -a "$head_rev" != "1" ] ; then
+      echo -e "[Container $d]: \e[31mapp_version changed and revision not reset to 1, this should be fixed!\e[0m"
+      EXIT_CODE=2
     else
       echo -e "[Container $d]: \e[32mapp_version or revision changed, everything is ok!\e[0m"
     fi
