@@ -12,7 +12,7 @@ cd containers
 
 for d in * ; do
   # check if directory changed and skip if not
-  git diff -s --exit-code "${GIT_DIFF_BASE}..${GIT_DIFF_HEAD}" "$d" && \
+  git diff -s --exit-code "${GIT_DIFF_BASE}..${GIT_DIFF_HEAD}" -- "$d" && \
     continue
   CHANGED=1
   echo "[Container $d]: files changed, checking versions"

@@ -10,13 +10,14 @@ NO_CONTAINERS=1
 for d in * ; do
   # check if directory changed and skip if not
   [ "$GIT_DIFF_ENABLED" = "1" ] && \
-    git diff -s --exit-code "${GIT_DIFF_BASE}..${GIT_DIFF_HEAD}" "$d" && \
+    git diff -s --exit-code "${GIT_DIFF_BASE}..${GIT_DIFF_HEAD}" -- "$d" && \
     continue
 
-  if [ -f "$d/Dockerfile" ] ; then
+  df="$d/Dockerfile"
+  if [ -f "$df" ] ; then
     echo "- \"container\": \"$d\""
     # extract additional properties from Dockerfiles
-    sed -En 's/^#\s+((\w|-)+):\s+(.+)$/  "\1": "\3"/p' "$d/Dockerfile" | grep -v '"renovate":'
+    sed -En 's/^#\s+((\w|-)+):\s+(.+)$/  "\1": "\3"/p' "$df" | grep -v '"renovate":'
     NO_CONTAINERS=0
   fi
 
