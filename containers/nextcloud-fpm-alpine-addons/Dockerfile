@@ -5,23 +5,23 @@
 # description: Nextcloud fpm alpine image with addons (imagemagick, smb support, imap support, kerberos support)
 FROM  nextcloud:28.0.6-fpm-alpine@sha256:34ffc5280ec0818fc0efa10d7b5ca193165b4cf9dfc6797443add8e5d640cf94
 
-# renovate: datasource=repology depName=alpine_3_19/ffmpeg versioning=loose
-ARG   FFMPEG_VERSION="6.1.1-r0"
-# renovate: datasource=repology depName=alpine_3_19/imagemagick versioning=loose
-ARG   IMAGEMAGICK_VERSION="7.1.1.32-r0"
-# renovate: datasource=repology depName=alpine_3_19/procps-ng versioning=loose
+# renovate: datasource=repology depName=alpine_3_20/ffmpeg versioning=loose
+ARG   FFMPEG_VERSION="6.1.1-r8"
+# renovate: datasource=repology depName=alpine_3_20/imagemagick versioning=loose
+ARG   IMAGEMAGICK_VERSION="7.1.1.32-r2"
+# renovate: datasource=repology depName=alpine_3_20/procps-ng versioning=loose
 ARG   PROCPS_NG_VERSION="4.0.4-r0"
-# renovate: datasource=repology depName=alpine_3_19/samba-client versioning=loose
-ARG   SAMBA_CLIENT_VERSION="4.18.9-r0"
-# renovate: datasource=repology depName=alpine_3_19/supervisor versioning=loose
-ARG   SUPERVISOR_VERSION="4.2.5-r4"
-# renovate: datasource=repology depName=alpine_3_19/imap-dev versioning=loose
+# renovate: datasource=repology depName=alpine_3_20/samba-client versioning=loose
+ARG   SAMBA_CLIENT_VERSION="4.19.6-r0"
+# renovate: datasource=repology depName=alpine_3_20/supervisor versioning=loose
+ARG   SUPERVISOR_VERSION="4.2.5-r5"
+# renovate: datasource=repology depName=alpine_3_20/imap-dev versioning=loose
 ARG   IMAP_VERSION="2007f-r15"
-# renovate: datasource=repology depName=alpine_3_19/krb5-dev versioning=loose
+# renovate: datasource=repology depName=alpine_3_20/krb5-dev versioning=loose
 ARG   KRB5_VERSION="1.21.2-r0"
-# renovate: datasource=repology depName=alpine_3_19/openssl-dev versioning=loose
-ARG   OPENSSL_VERSION="3.1.5-r0"
-# renovate: datasource=repology depName=alpine_3_19/bzip2-dev versioning=loose
+# renovate: datasource=repology depName=alpine_3_20/openssl-dev versioning=loose
+ARG   OPENSSL_VERSION="3.3.1-r0"
+# renovate: datasource=repology depName=alpine_3_20/bzip2-dev versioning=loose
 ARG   BZIP2_VERSION="1.0.8-r6"
 
 
