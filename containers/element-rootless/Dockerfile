@@ -1,9 +1,9 @@
 # platforms: linux/amd64,linux/arm64
 # renovate: datasource=docker depName=vectorim/element-web extractVersion=^v(?<version>.*)$
-# app_version: 1.11.83
+# app_version: 1.11.84
 # revision: 1
 # description: Matrix Element Web client modified to run without root privileges
-FROM  vectorim/element-web:v1.11.83@sha256:8cae22fb9b6afb6787b1e677fb20f9db05d7e6a484fcd74427ea953a44ae881a
+FROM  vectorim/element-web:v1.11.84@sha256:fdda9d781782da10a6278283267ea75359a16c0dbc23bee493863496bd985c0a
 
 # make it run on non-root
 RUN   mkdir -p /var/log/nginx /var/cache/nginx /var/run/nginx && \
