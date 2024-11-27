@@ -1,9 +1,9 @@
 # platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x
 # renovate: datasource=docker depName=nginx extractVersion=^(?<version>.*)-alpine$
-# app_version: 1.27.2
-# revision: 2
+# app_version: 1.27.3
+# revision: 1
 # description: Nginx image modified to run without root privileges
-FROM  nginx:1.27.2-alpine@sha256:74175cf34632e88c6cfe206897cbfe2d2fecf9bf033c40e7f9775a3689e8adc7
+FROM  nginx:1.27.3-alpine@sha256:5acf10cd305853dc2271e3c818d342f3aeb3688b1256ab8f035fda04b91ed303
 
 # make it run on non-root
 RUN   mkdir -p /var/log/nginx /var/cache/nginx /var/run/nginx && \
