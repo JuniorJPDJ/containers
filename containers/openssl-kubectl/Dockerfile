@@ -1,18 +1,18 @@
 # platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/ppc64le,linux/s390x
-# renovate: datasource=repology depName=alpine_3_20/kubectl versioning=loose extractVersion=^(?<version>.*)-r\d+$
-# app_version: 1.30.0
-# revision: 15
+# renovate: datasource=repology depName=alpine_3_21/kubectl versioning=loose extractVersion=^(?<version>.*)-r\d+$
+# app_version: 1.31.3
+# revision: 1
 # description: Small image with kubectl and openssl designed as a helper for kubernetes hook jobs
-FROM  alpine:3.20.3@sha256:1e42bbe2508154c9126d48c2b8a75420c3544343bf86fd041fb7527e017a4b4a
+FROM  alpine:3.21.0@sha256:21dc6063fd678b478f57c0e13f47560d0ea4eeba26dfc947b2a4f81f686b9f45
 
-# renovate: datasource=repology depName=alpine_3_20/openssl versioning=loose
-ARG   OPENSSL_VERSION="3.3.2-r1"
-# renovate: datasource=repology depName=alpine_3_20/kubectl versioning=loose
-ARG   KUBECTL_VERSION="1.30.0-r3"
-# renovate: datasource=repology depName=alpine_3_20/jq versioning=loose
+# renovate: datasource=repology depName=alpine_3_21/openssl versioning=loose
+ARG   OPENSSL_VERSION="3.3.2-r4"
+# renovate: datasource=repology depName=alpine_3_21/kubectl versioning=loose
+ARG   KUBECTL_VERSION="1.31.3-r0"
+# renovate: datasource=repology depName=alpine_3_21/jq versioning=loose
 ARG   JQ_VERSION="1.7.1-r0"
-# renovate: datasource=repology depName=alpine_3_20/yq-go versioning=loose
-ARG   YQ_VERSION="4.44.1-r2"
+# renovate: datasource=repology depName=alpine_3_21/yq-go versioning=loose
+ARG   YQ_VERSION="4.44.5-r0"
 
 RUN   apk add --no-cache \
         openssl=${OPENSSL_VERSION} \
