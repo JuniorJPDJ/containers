@@ -1,8 +1,8 @@
 # platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x
 # app_version: 1.0.0
-# revision: 17
+# revision: 18
 # description: Arch Linux syncrepo mirror synchronization script
-FROM        alpine:3.21.0@sha256:21dc6063fd678b478f57c0e13f47560d0ea4eeba26dfc947b2a4f81f686b9f45 AS patch
+FROM        alpine:3.21.2@sha256:56fa17d2a7e7f168a043a2712e63aed1f8543aeafdcee47c58dcffe38ed51099 AS patch
 
 ARG         SYNCREPO_VERSION=4fe427a2
 
@@ -19,7 +19,7 @@ RUN         patch /syncrepo /syncrepo.patch
 
 
 
-FROM        alpine:3.21.0@sha256:21dc6063fd678b478f57c0e13f47560d0ea4eeba26dfc947b2a4f81f686b9f45
+FROM        alpine:3.21.2@sha256:56fa17d2a7e7f168a043a2712e63aed1f8543aeafdcee47c58dcffe38ed51099
 
 # renovate: datasource=repology depName=alpine_3_21/rsync versioning=loose
 ARG         RSYNC_VERSION="3.3.0-r1"
@@ -42,7 +42,6 @@ RUN         apk add --no-cache \
               bash=${BASH_VERSION} \
             && \
             rm -rf /var/cache/apk/* && \
-            mkdir /run/lock && \
             touch /var/lock/syncrepo.lck -t 0001010000 && \
             chmod 666 /var/lock/syncrepo.lck && \
             echo "nobody" > /etc/crontabs/cron.update
