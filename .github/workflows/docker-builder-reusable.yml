@@ -110,6 +110,17 @@ jobs:
             type=semver,enable={{is_default_branch}},value=${{ inputs.app_version }},pattern={{major}}.{{minor}},priority=1997
             type=semver,enable={{is_default_branch}},value=${{ inputs.app_version }},pattern={{major}},priority=1996
 
+      - name: Prepare variables
+        id: vars
+        run: |
+          platform=${{ matrix.platform }}
+          image=${{ steps.meta.outputs.tags }}
+          {
+            echo "platform_pair=${platform//\//-}"
+            echo "platform_pair_un=${platform//\//_}"
+            echo "image=${image%%:*}"
+          } >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6.13.0
@@ -120,5 +131,5 @@ jobs:
           platforms: ${{ matrix.platform }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=buildkit-layer-${{ steps.vars.outputs.platform_pair }}
+          cache-to: type=gha,mode=max,scope=buildkit-layer-${{ steps.vars.outputs.platform_pair }}
