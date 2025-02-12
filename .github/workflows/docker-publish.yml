@@ -58,7 +58,6 @@ jobs:
     uses: ./.github/workflows/docker-builder-reusable.yml
     with:
       context: containers/${{ matrix.container }}
-      file: Dockerfile
       title: ${{ matrix.container }}
       description: ${{ matrix.description }}
       app_version: ${{ matrix.app_version }}

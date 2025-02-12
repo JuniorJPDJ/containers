@@ -8,7 +8,7 @@ on:
         required: false
         type: string
       file:
-        default: "Dockerfile"
+        default: "{context}/Dockerfile"
         required: false
         type: string
 
