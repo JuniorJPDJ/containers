@@ -1,0 +1,125 @@
+name: Build and push docker container (parallelized build with native arm builders)
+
+on:
+  workflow_call:
+    inputs:
+      context:
+        default: "."
+        required: false
+        type: string
+      file:
+        default: "Dockerfile"
+        required: false
+        type: string
+
+      title:
+        required: true
+        type: string
+      description:
+        required: false
+        type: string
+
+      app_version:
+        default: '0.1.0'
+        required: false
+        type: string
+      revision:
+        default: 1
+        required: false
+        type: number
+
+      platforms:
+        default: 'linux/amd64,linux/arm64'
+        required: false
+        type: string
+
+      registry:
+        default: ghcr.io
+        required: false
+        type: string
+      image_name:
+        required: true
+        type: string
+    secrets:
+      registry_username:
+        required: true
+      registry_password:
+        required: true
+
+jobs:
+  vars:
+    name: Preprocess variables
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Preprocess variables
+        id: vars
+        run: |
+          platforms="${{ inputs.platforms }}"
+          {
+            echo "version=${{ inputs.app_version }}-r${{ inputs.revision }}"
+            echo "platforms<<9743a66f914cc249efca164485a19c5c"
+            echo echo "[\"${platforms//,/\",\"}\"]"
+            echo "9743a66f914cc249efca164485a19c5c"
+          } >> "$GITHUB_OUTPUT"
+    outputs:
+      version: ${{ steps.vars.outputs.version }}
+      platforms: ${{ steps.vars.outputs.platforms }}
+
+  build:
+    name: Build container ${{ matrix.platform }}
+    runs-on: ubuntu-24.04
+    needs: vars
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ${{ fromJSON(needs.vars.outputs.platforms) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      # Workaround: https://github.com/docker/build-push-action/issues/461
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3.9.0
+
+      - name: Log into registry ${{ inputs.registry }}
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ secrets.registry_username }}
+          password: ${{ secrets.registry_password }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5.6.1
+        with:
+          images: ${{ inputs.registry }}/${{ inputs.image_name }}
+          labels: |
+            org.opencontainers.image.title=${{ inputs.title }}
+            org.opencontainers.image.description=${{ inputs.description }}
+          tags: |
+            type=ref,event=branch,priority=1990
+            type=ref,event=pr,priority=2999
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,enable={{is_default_branch}},value=${{ needs.vars.outputs.version }},priority=1999
+            type=raw,enable={{is_default_branch}},value=${{ inputs.app_version }},priority=1998
+            type=semver,enable={{is_default_branch}},value=${{ inputs.app_version }},pattern={{major}}.{{minor}},priority=1997
+            type=semver,enable={{is_default_branch}},value=${{ inputs.app_version }},pattern={{major}},priority=1996
+
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6.13.0
+        with:
+          context: ${{ inputs.context }}
+          file: ${{ inputs.file }}
+          push: true
+          platforms: ${{ matrix.platform }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
