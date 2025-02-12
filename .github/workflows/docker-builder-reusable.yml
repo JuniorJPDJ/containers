@@ -8,7 +8,6 @@ on:
         required: false
         type: string
       file:
-        default: "{context}/Dockerfile"
         required: false
         type: string
 
@@ -66,8 +65,8 @@ jobs:
       platforms: ${{ steps.vars.outputs.platforms }}
 
   build:
-    name: Build container ${{ matrix.platform }}
-    runs-on: ubuntu-24.04
+    name: Build container for ${{ matrix.platform }}
+    runs-on: ${{ startsWith(matrix.platform, 'linux/arm') && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
     needs: vars
     permissions:
       contents: read
