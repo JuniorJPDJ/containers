@@ -18,7 +18,7 @@ on:
         required: false
         type: string
 
-      app_version:
+      app-version:
         default: '0.1.0'
         required: false
         type: string
@@ -31,18 +31,22 @@ on:
         default: 'linux/amd64,linux/arm64'
         required: false
         type: string
+      mount-cache-dirs:
+        description: ""
+        required: false
+        type: string
 
       registry:
         default: ghcr.io
         required: false
         type: string
-      image_name:
+      image-name:
         required: true
         type: string
     secrets:
-      registry_username:
+      registry-username:
         required: true
-      registry_password:
+      registry-password:
         required: true
 
 jobs:
@@ -55,7 +59,7 @@ jobs:
         run: |
           platforms="${{ inputs.platforms }}"
           {
-            echo "version=${{ inputs.app_version }}-r${{ inputs.revision }}"
+            echo "version=${{ inputs.app-version }}-r${{ inputs.revision }}"
             echo "platforms<<9743a66f914cc249efca164485a19c5c"
             echo "[\"${platforms//,/\",\"}\"]"
             echo "9743a66f914cc249efca164485a19c5c"
@@ -90,14 +94,14 @@ jobs:
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
         with:
           registry: ${{ inputs.registry }}
-          username: ${{ secrets.registry_username }}
-          password: ${{ secrets.registry_password }}
+          username: ${{ secrets.registry-username }}
+          password: ${{ secrets.registry-password }}
 
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5.6.1
         with:
-          images: ${{ inputs.registry }}/${{ inputs.image_name }}
+          images: ${{ inputs.registry }}/${{ inputs.image-name }}
           labels: |
             org.opencontainers.image.title=${{ inputs.title }}
             org.opencontainers.image.description=${{ inputs.description }}
@@ -106,9 +110,9 @@ jobs:
             type=ref,event=pr,priority=2999
             type=raw,value=latest,enable={{is_default_branch}}
             type=raw,enable={{is_default_branch}},value=${{ needs.vars.outputs.version }},priority=1999
-            type=raw,enable={{is_default_branch}},value=${{ inputs.app_version }},priority=1998
-            type=semver,enable={{is_default_branch}},value=${{ inputs.app_version }},pattern={{major}}.{{minor}},priority=1997
-            type=semver,enable={{is_default_branch}},value=${{ inputs.app_version }},pattern={{major}},priority=1996
+            type=raw,enable={{is_default_branch}},value=${{ inputs.app-version }},priority=1998
+            type=semver,enable={{is_default_branch}},value=${{ inputs.app-version }},pattern={{major}}.{{minor}},priority=1997
+            type=semver,enable={{is_default_branch}},value=${{ inputs.app-version }},pattern={{major}},priority=1996
 
       - name: Prepare variables
         id: vars
@@ -116,8 +120,8 @@ jobs:
           platform=${{ matrix.platform }}
           image=${{ steps.meta.outputs.tags }}
           {
-            echo "platform_pair=${platform//\//-}"
-            echo "platform_pair_un=${platform//\//_}"
+            echo "platform-pair=${platform//\//-}"
+            echo "platform-pair-un=${platform//\//_}"
             echo "image=${image%%:*}"
           } >> $GITHUB_OUTPUT
 
@@ -131,5 +135,5 @@ jobs:
           platforms: ${{ matrix.platform }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=buildkit-layer-${{ steps.vars.outputs.platform_pair }}
-          cache-to: type=gha,mode=max,scope=buildkit-layer-${{ steps.vars.outputs.platform_pair }}
+          cache-from: type=gha,scope=buildkit-layer-${{ steps.vars.outputs.platform-pair }}
+          cache-to: type=gha,mode=max,scope=buildkit-layer-${{ steps.vars.outputs.platform-pair }}
