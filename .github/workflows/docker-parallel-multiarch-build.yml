@@ -113,8 +113,6 @@ jobs:
       - name: Prepare variables
         id: vars
         run: |
-          set -x
-
           platform="${{ matrix.platform }}"
           image="${{ steps.meta.outputs.tags }}"
 
@@ -126,7 +124,7 @@ jobs:
             echo "cache-map<<9743a66f914cc249efca164485a19c5c"
             jq --arg 'id_suffix' '-linux/amd64' 'to_entries | map({(.key): {target: .value, id: "\(.key)\($id_suffix)"}})' << 9743a66f914cc249efca164485a19c5c
               ${{ inputs.buildkit-mount-caches }}
-            9743a66f914cc249efca164485a19c5c
+          9743a66f914cc249efca164485a19c5c
             echo "9743a66f914cc249efca164485a19c5c"
           } >> $GITHUB_OUTPUT
           
