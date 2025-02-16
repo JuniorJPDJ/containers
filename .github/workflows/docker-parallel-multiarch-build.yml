@@ -116,13 +116,15 @@ jobs:
           platform='${{ matrix.platform }}'
           image='${{ steps.meta.outputs.tags }}'
 
+          [ '${{ inputs.buildkit-mount-cache-ids-append-platform }}' = 'true' ] && id_suffix='-${{ matrix.platform }}'
+
           {
             echo "platform-pair=${platform//\//-}"
             echo "platform-pair-un=${platform//\//_}"
             echo "image=${image%%:*}"
 
             echo "cache-map<<9743a66f914cc249efca164485a19c5c"
-            jq --arg 'id_suffix' '-${{ matrix.platform }}' 'to_entries | map({(.key): {target: .value, id: "\(.key)\($id_suffix)"}}) | add' << 9743a66f914cc249efca164485a19c5c
+            jq --arg 'id_suffix' "$id_suffix" 'to_entries | map({(.key): {target: .value, id: "\(.key)\($id_suffix)"}}) | add' << 9743a66f914cc249efca164485a19c5c
               ${{ inputs.buildkit-mount-caches }}
           9743a66f914cc249efca164485a19c5c
             echo "9743a66f914cc249efca164485a19c5c"
