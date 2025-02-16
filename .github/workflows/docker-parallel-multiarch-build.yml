@@ -126,6 +126,12 @@ jobs:
               ${{ inputs.buildkit-mount-caches }}
           9743a66f914cc249efca164485a19c5c
             echo "9743a66f914cc249efca164485a19c5c"
+
+            echo "cache-paths<<9743a66f914cc249efca164485a19c5c"
+            jq -r 'to_entries | .[].key' << 9743a66f914cc249efca164485a19c5c
+              ${{ inputs.buildkit-mount-caches }}
+          9743a66f914cc249efca164485a19c5c
+            echo "9743a66f914cc249efca164485a19c5c"
           } >> $GITHUB_OUTPUT
           
           cat $GITHUB_OUTPUT
@@ -135,8 +141,7 @@ jobs:
         uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
         with:
           path: |
-            home-cache
-            home-cargo
+            ${{ steps.vars.outputs.cache-paths }}
           key: buildkit-mount-${{ inputs.title }}-${{ steps.vars.outputs.platform-pair }}-${{ github.sha }}
           restore-keys: |
             buildkit-mount-${{ inputs.title }}-${{ steps.vars.outputs.platform-pair }}-
@@ -146,16 +151,7 @@ jobs:
         uses: reproducible-containers/buildkit-cache-dance@5b6db76d1da5c8b307d5d2e0706d266521b710de # v3.1.2
         with:
           cache-map: |
-            {
-              "home-cache": {
-                "target": "/root/.cache",
-                "id": "home-cache-${{ matrix.platform }}"
-              },
-              "home-cargo": {
-                "target": "/root/.cargo",
-                "id": "home-cargo-${{ matrix.platform }}"
-              }
-            }
+            ${{ steps.vars.outputs.cache-map }}
 
       - name: Build and push Docker image
         id: build-and-push
