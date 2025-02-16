@@ -65,6 +65,7 @@ jobs:
       platforms: ${{ matrix.platforms }}
       registry: ghcr.io
       image-name: ${{ github.repository }}/${{ matrix.container }}
+      buildkit-mount-caches: '{"home-cache": "/root/.cache", "home-cargo": "/root/.cargo"}'
     secrets:
       registry-username: ${{ github.actor }}
       registry-password: ${{ secrets.GITHUB_TOKEN }}
