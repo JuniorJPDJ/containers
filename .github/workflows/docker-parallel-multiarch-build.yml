@@ -187,7 +187,7 @@ jobs:
     #   ${{ steps.vars.outputs.platform-pair-un }}-digest: ${{ steps.build-and-push.outputs.digest }}
 
   merge:
-    name: Merge images to single multi-arch image
+    name: Merge images to multi-arch image
     runs-on: ubuntu-24.04
     permissions:
       contents: read
