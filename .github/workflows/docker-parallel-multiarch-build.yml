@@ -31,10 +31,14 @@ on:
         default: 'linux/amd64,linux/arm64'
         required: false
         type: string
-      mount-cache-dirs:
-        description: ""
+      buildkit-mount-caches:
+        description: "JSON object: `{id1: target1, id2: target2}`."
         required: false
         type: string
+      buildkit-mount-cache-ids-append-platform:
+        description: "If true, the workflow will append `-{{ platform }}` to the end of cache mount id (eg. `-linux/amd64`)."
+        default: false
+        type: boolean
 
       registry:
         default: ghcr.io
@@ -109,13 +113,24 @@ jobs:
       - name: Prepare variables
         id: vars
         run: |
+          set -x
+
           platform="${{ matrix.platform }}"
           image="${{ steps.meta.outputs.tags }}"
+
           {
             echo "platform-pair=${platform//\//-}"
             echo "platform-pair-un=${platform//\//_}"
             echo "image=${image%%:*}"
+
+            echo "cache-map<<9743a66f914cc249efca164485a19c5c"
+            jq --arg 'id_suffix' '-linux/amd64' 'to_entries | map({(.key): {target: .value, id: "\(.key)\($id_suffix)"}})' << 9743a66f914cc249efca164485a19c5c
+              ${{ inputs.buildkit-mount-caches }}
+            9743a66f914cc249efca164485a19c5c
+            echo "9743a66f914cc249efca164485a19c5c"
           } >> $GITHUB_OUTPUT
+          
+          cat $GITHUB_OUTPUT
 
       # TODO
       - name: Setup buildkit mount cache
