@@ -124,9 +124,9 @@ jobs:
           path: |
             home-cache
             home-cargo
-          key: buildkit-mount-${{ inputs.title }}-${{ steps.vars.outputs.platform_pair }}-${{ github.sha }}
+          key: buildkit-mount-${{ inputs.title }}-${{ steps.vars.outputs.platform-pair }}-${{ github.sha }}
           restore-keys: |
-            buildkit-mount-${{ inputs.title }}-${{ steps.vars.outputs.platform_pair }}-
+            buildkit-mount-${{ inputs.title }}-${{ steps.vars.outputs.platform-pair }}-
 
       # TODO
       - name: Inject buildkit mount cache into docker
@@ -167,7 +167,7 @@ jobs:
       - name: Upload digest as an artifact
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
         with:
-          name: digests-${{ inputs.title }}-${{ steps.vars.outputs.platform_pair }}
+          name: digests-${{ inputs.title }}-${{ steps.vars.outputs.platform-pair }}
           path: ${{ runner.temp }}/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -175,7 +175,7 @@ jobs:
     outputs:
       image: ${{ steps.vars.outputs.image }}
     # https://github.com/actions/runner/pull/2477 :<
-    #   ${{ steps.vars.outputs.platform_pair_un }}_digest: ${{ steps.build-and-push.outputs.digest }}
+    #   ${{ steps.vars.outputs.platform-pair-un }}-digest: ${{ steps.build-and-push.outputs.digest }}
 
   merge:
     runs-on: ubuntu-24.04
