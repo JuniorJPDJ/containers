@@ -55,7 +55,7 @@ jobs:
       fail-fast: false
       matrix:
         include: ${{ fromJSON(needs.list_containers.outputs.matrix) }}
-    uses: ./.github/workflows/docker-builder-reusable.yml
+    uses: ./.github/workflows/docker-parallel-multiarch-build.yml
     with:
       context: containers/${{ matrix.container }}
       title: ${{ matrix.container }}
