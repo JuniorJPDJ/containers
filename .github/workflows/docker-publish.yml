@@ -8,13 +8,10 @@ on:
     types: [opened, reopened, synchronize]
   workflow_dispatch:
 
-env:
-  REGISTRY: ghcr.io
-
 jobs:
   list_containers:
     name: List containers to build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ steps.set-matrix.outputs.MATRIX }}
     steps:
@@ -46,7 +43,6 @@ jobs:
 
   build:
     name: "Build container: ${{ matrix.container }}"
-    runs-on: ubuntu-latest
     needs: list_containers
     permissions:
       contents: read
@@ -59,68 +55,16 @@ jobs:
       fail-fast: false
       matrix:
         include: ${{ fromJSON(needs.list_containers.outputs.matrix) }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Generate properties
-        id: props
-        run: |
-          PLATFORMS_DEFAULT="linux/amd64,linux/arm64"
-          APP_VERSION_DEFAULT="0.1.0"
-          REVISION_DEFAULT="1"
-
-          PLATFORMS="${{ matrix.platforms }}"
-          APP_VERSION="${{ matrix.app_version }}"
-          REVISION="${{ matrix.revision }}"
-
-          platforms="${PLATFORMS:-"${PLATFORMS_DEFAULT}"}"
-          app_version="${APP_VERSION:-"${APP_VERSION_DEFAULT}"}"
-          revision="${REVISION:-"${REVISION_DEFAULT}"}"
-          {
-            echo "platforms=$platforms"
-            echo "app_version=$app_version"
-            echo "revision=$revision"
-            echo "version=${app_version}-r${revision}"
-          } >> "$GITHUB_OUTPUT"
-
-      # Workaround: https://github.com/docker/build-push-action/issues/461
-      - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@f7ce87c1d6bead3e36075b2ce75da1f6cc28aaca # v3.9.0
-
-      - name: Log into registry ${{ env.REGISTRY }}
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract Docker metadata
-        id: meta
-        uses: docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96 # v5.6.1
-        with:
-          images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.container }}
-          labels: |
-            org.opencontainers.image.title=${{ matrix.container }}
-            org.opencontainers.image.description=${{ matrix.description }}
-          tags: |
-            type=ref,event=branch,priority=1990
-            type=ref,event=pr,priority=2999
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=raw,enable={{is_default_branch}},value=${{ steps.props.outputs.version }},priority=1999
-            type=raw,enable={{is_default_branch}},value=${{ steps.props.outputs.app_version }},priority=1998
-            type=semver,enable={{is_default_branch}},value=${{ steps.props.outputs.app_version }},pattern={{major}}.{{minor}},priority=1997
-            type=semver,enable={{is_default_branch}},value=${{ steps.props.outputs.app_version }},pattern={{major}},priority=1996
-
-      - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@ca877d9245402d1537745e0e356eab47c3520991 # v6.13.0
-        with:
-          context: containers/${{ matrix.container }}
-          push: true
-          platforms: ${{ steps.props.outputs.platforms }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+    uses: ./.github/workflows/docker-parallel-multiarch-build.yml
+    with:
+      context: containers/${{ matrix.container }}
+      title: ${{ matrix.container }}
+      description: ${{ matrix.description }}
+      app-version: ${{ matrix.app_version }}
+      revision: ${{ fromJSON(matrix.revision) }}
+      platforms: ${{ matrix.platforms }}
+      registry: ghcr.io
+      image-name: ${{ github.repository }}/${{ matrix.container }}
+    secrets:
+      registry-username: ${{ github.actor }}
+      registry-password: ${{ secrets.GITHUB_TOKEN }}
