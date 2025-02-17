@@ -75,7 +75,8 @@ jobs:
   build:
     name: Build container for ${{ matrix.platform }}
     runs-on: ${{ startsWith(matrix.platform, 'linux/arm') && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
-    needs: vars
+    needs:
+      - vars
     permissions:
       contents: read
       packages: write
@@ -199,6 +200,7 @@ jobs:
       id-token: write
     needs:
       - build
+      - vars
     steps:
       - name: Download digests
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
