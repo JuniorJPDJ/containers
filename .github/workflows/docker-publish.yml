@@ -61,7 +61,7 @@ jobs:
       title: ${{ matrix.container }}
       description: ${{ matrix.description }}
       app-version: ${{ matrix.app_version }}
-      revision: ${{ fromJSON(matrix.revision) }}
+      revision: ${{ matrix.revision }}
       platforms: ${{ matrix.platforms }}
       registry: ghcr.io
       image-name: ${{ github.repository }}/${{ matrix.container }}

@@ -19,24 +19,22 @@ on:
         type: string
 
       app-version:
-        default: '0.1.0'
         required: false
         type: string
       revision:
-        default: 1
         required: false
-        type: number
+        type: string
 
       platforms:
         default: 'linux/amd64,linux/arm64'
         required: false
         type: string
       buildkit-mount-caches:
-        description: "JSON object: `{id1: target1, id2: target2}`."
+        description: 'JSON object: `{"id1": "target1", "id2": "target2"}`.'
         required: false
         type: string
       buildkit-mount-cache-ids-append-platform:
-        description: "If true, the workflow will append `-{{ platform }}` to the end of cache mount id (eg. `-linux/amd64`)."
+        description: 'If true, the workflow will append `-{{ platform }}` to the end of cache mount id (eg. `-linux/amd64`).'
         default: false
         type: boolean
 
@@ -63,7 +61,8 @@ jobs:
         run: |
           platforms="${{ inputs.platforms }}"
           {
-            echo "version=${{ inputs.app-version }}-r${{ inputs.revision }}"
+            [ -n "${{ inputs.app-version }}" -a -n "${{ inputs.revision }}" ] && \
+              echo "version=${{ inputs.app-version }}-r${{ inputs.revision }}"
             echo "platforms<<9743a66f914cc249efca164485a19c5c"
             echo "[\"${platforms//,/\",\"}\"]"
             echo "9743a66f914cc249efca164485a19c5c"
