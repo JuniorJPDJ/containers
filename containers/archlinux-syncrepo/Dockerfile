@@ -1,6 +1,6 @@
 # platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x
 # app_version: 1.0.0
-# revision: 22
+# revision: 23
 # description: Arch Linux syncrepo mirror synchronization script
 FROM        alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c AS patch
 
@@ -24,7 +24,7 @@ FROM        alpine:3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e
 # renovate: datasource=repology depName=alpine_3_21/rsync versioning=loose
 ARG         RSYNC_VERSION="3.4.0-r0"
 # renovate: datasource=repology depName=alpine_3_21/curl versioning=loose
-ARG         CURL_VERSION="8.12.1-r0"
+ARG         CURL_VERSION="8.12.1-r1"
 # renovate: datasource=repology depName=alpine_3_21/bash versioning=loose
 ARG         BASH_VERSION="5.2.37-r0"
 
