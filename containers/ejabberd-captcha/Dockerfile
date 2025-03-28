@@ -1,9 +1,9 @@
 # platforms: linux/amd64
 # renovate: datasource=docker depName=ejabberd/ecs
-# app_version: 24.12
+# app_version: 25.03
 # revision: 1
 # description: Robust, Ubiquitous and Massively Scalable Messaging Platform (XMPP, MQTT, SIP Server) with captcha scripts support and replacement of placeholders in config file with environment variables
-FROM        ejabberd/ecs:24.12@sha256:2d355903b7dccec74600622a25e500c99cd0e5ae66067bb7c5117803a4edc61a
+FROM        ejabberd/ecs:25.03@sha256:0e9f7070b90c8a32c6f8ca411bcc2839935703cc07087d149877635a54d37d66
 
 # renovate: datasource=repology depName=alpine_3_19/imagemagick versioning=loose
 ARG         IMAGEMAGICK_VERSION="7.1.1.32-r0"
