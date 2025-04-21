@@ -1,7 +1,7 @@
 # platforms: linux/amd64
 # renovate: datasource=docker depName=ejabberd/ecs
 # app_version: 25.04
-# revision: 1
+# revision: 2
 # description: Robust, Ubiquitous and Massively Scalable Messaging Platform (XMPP, MQTT, SIP Server) with captcha scripts support and replacement of placeholders in config file with environment variables
 FROM        ejabberd/ecs:25.04@sha256:b1b3da39e05060d67abb9c3d4ae172cfd66e8abfd9b8cfd4d5f67deffffb267b
 
@@ -26,6 +26,8 @@ RUN         apk add --no-cache \
               gettext=${GETTEXT_VERSION}
 
 USER        ejabberd
+
+ENV         CAPTCHA_CMD="/home/ejabberd/bin/captcha-ng.sh"
 
 ENTRYPOINT  ["/custom_entrypoint.sh", "/home/ejabberd/bin/ejabberdctl"]
 CMD         ["foreground"]
