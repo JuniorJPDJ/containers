@@ -10,9 +10,9 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        "(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$",
-        "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"
+      "managerFilePatterns": [
+        "/(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$/",
+        "/(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$/"
       ],
       "matchStrings": [
         "#\\s+renovate:\\s+datasource=(?<datasource>[a-z-.]+?)\\s+depName=(?<depName>[^\\s]+?)(?:\\s+(lookupName|packageName)=(?<packageName>[^\\s]+?))?(?:\\s+versioning=(?<versioning>[^\\s]+?))?(?:\\s+extractVersion=(?<extractVersion>[^\\s]+?))?(?:\\s+registryUrl=(?<registryUrl>[^\\s]+?))?\\n#\\s+app_version:\\s+(?<currentValue>.+?)\\s"
