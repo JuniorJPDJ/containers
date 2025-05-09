@@ -64,7 +64,7 @@ jobs:
       revision: ${{ matrix.revision }}
       platforms: ${{ matrix.platforms }}
       registry: ghcr.io
+      registry-username: ${{ github.actor }}
       image-name: ${{ github.repository }}/${{ matrix.container }}
     secrets:
-      registry-username: ${{ github.actor }}
       registry-password: ${{ secrets.GITHUB_TOKEN }}
