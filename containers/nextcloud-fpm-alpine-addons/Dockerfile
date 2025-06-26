@@ -1,9 +1,9 @@
 # platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/386,linux/ppc64le,linux/s390x
 # renovate: datasource=docker depName=nextcloud extractVersion=^(?<version>.*)-fpm-alpine$
 # app_version: 30.0.12
-# revision: 1
+# revision: 2
 # description: Nextcloud fpm alpine image with addons (imagemagick, smb support, imap support, kerberos support)
-FROM  nextcloud:30.0.12-fpm-alpine@sha256:b1807d49430e265352ad5feea6e7c348481756e81dde2663e9d6755fde60be1d
+FROM  nextcloud:30.0.12-fpm-alpine@sha256:6df14afd176420bc831a3d7e4f8ee0d8690dedc80e9e08189172f38496588017
 
 # renovate: datasource=repology depName=alpine_3_22/ffmpeg versioning=loose
 ARG   FFMPEG_VERSION="6.1.2-r2"
