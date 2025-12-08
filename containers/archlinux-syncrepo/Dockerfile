@@ -21,12 +21,12 @@ RUN         patch /syncrepo /syncrepo.patch
 
 FROM        alpine:3.23.0@sha256:51183f2cfa6320055da30872f211093f9ff1d3cf06f39a0bdb212314c5dc7375
 
-# renovate: datasource=repology depName=alpine_3_22/rsync versioning=loose
+# renovate: datasource=repology depName=alpine_3_23/rsync versioning=loose
 ARG         RSYNC_VERSION="3.4.1-r1"
-# renovate: datasource=repology depName=alpine_3_22/curl versioning=loose
-ARG         CURL_VERSION="8.14.1-r2"
-# renovate: datasource=repology depName=alpine_3_22/bash versioning=loose
-ARG         BASH_VERSION="5.2.37-r0"
+# renovate: datasource=repology depName=alpine_3_23/curl versioning=loose
+ARG         CURL_VERSION="8.17.0-r1"
+# renovate: datasource=repology depName=alpine_3_23/bash versioning=loose
+ARG         BASH_VERSION="5.3.3-r1"
 
 
 ENV         TARGETDIR=out
