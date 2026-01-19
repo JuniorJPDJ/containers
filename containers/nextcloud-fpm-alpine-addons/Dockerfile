@@ -11,7 +11,7 @@ ARG   FFMPEG_VERSION="8.0.1-r0"
 ARG   IMAGEMAGICK_VERSION="7.1.2.8-r0"
 # renovate: datasource=repology depName=alpine_3_23/procps-ng versioning=loose
 ARG   PROCPS_NG_VERSION="4.0.5-r0"
-# renovate: datasource=repology depName=alpine_3_23/c versioning=loose
+# renovate: datasource=repology depName=alpine_3_23/samba-client versioning=loose
 ARG   SAMBA_CLIENT_VERSION="4.22.6-r0"
 # renovate: datasource=repology depName=alpine_3_23/supervisor versioning=loose
 ARG   SUPERVISOR_VERSION="4.3.0-r0"
