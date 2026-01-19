@@ -44,6 +44,9 @@ jobs:
   build:
     name: "Build container: ${{ matrix.container }}"
     needs: list_containers
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.container }}
+      cancel-in-progress: false
     permissions:
       contents: read
       packages: write
