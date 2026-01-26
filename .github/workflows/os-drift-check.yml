@@ -1,0 +1,43 @@
+name: OS Version Drift Check
+
+on:
+  pull_request:
+    paths:
+      - 'containers/**/Dockerfile'
+  workflow_dispatch:
+
+jobs:
+  os_drift_check:
+    name: Check OS version drift in Dockerfiles
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Run OS drift check
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+            echo "Checking changed Dockerfiles between $BASE_SHA and $HEAD_SHA"
+            # Get list of changed Dockerfiles
+            FILES=$(git diff --name-only "$BASE_SHA..$HEAD_SHA" | grep '^containers/.*Dockerfile$' || true)
+          else
+            echo "Manual trigger or non-PR event: checking all Dockerfiles"
+            FILES=$(find containers -name Dockerfile)
+          fi
+
+          if [ -z "$FILES" ]; then
+            echo "No Dockerfiles to check."
+            exit 0
+          fi
+
+          EXIT_CODE=0
+          for f in $FILES; do
+            if [ -f "$f" ]; then
+              ./scripts/check_os_drift.sh "$f" || EXIT_CODE=1
+            fi
+          done
+          exit $EXIT_CODE
