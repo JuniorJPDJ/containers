@@ -1,12 +1,12 @@
-name: DockerHub Multi-arch Full Build Check
+name: DockerHub multi-arch full build check
 
 on:
   pull_request:
     types: [opened, reopened, synchronize]
 
 jobs:
-  check_multiarch_sync:
-    name: Check DockerHub Multi-arch Sync
+  check_dockerhub_multiarch_full_build:
+    name: Run DockerHub multi-arch full build check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -19,10 +19,10 @@ jobs:
           curl -sL https://github.com/google/go-containerregistry/releases/latest/download/go-containerregistry_Linux_x86_64.tar.gz | tar -xz crane
           sudo mv crane /usr/local/bin/
 
-      - name: Run DockerHub Multi-arch Full Build Check
+      - name: Run DockerHub multi-arch full build check
         env:
           THRESHOLD_HOURS: 24
         run: |
           GIT_DIFF_BASE='${{ github.event.pull_request.base.sha }}'
           GIT_DIFF_HEAD='${{ github.event.pull_request.head.sha }}'
-          ./scripts/dockerhub-multiarch-full-build-check.sh "$GIT_DIFF_BASE" "$GIT_DIFF_HEAD"
+          ./scripts/dockerhub_multiarch_full_build_check.sh "$GIT_DIFF_BASE" "$GIT_DIFF_HEAD"
