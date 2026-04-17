@@ -1,9 +1,9 @@
 # platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/ppc64le,linux/s390x
 # renovate: datasource=repology depName=alpine_3_23/kubectl versioning=loose extractVersion=^(?<version>.*)-r\d+$
 # app_version: 1.34.2
-# revision: 8
+# revision: 9
 # description: Small image with kubectl and openssl designed as a helper for kubernetes hook jobs
-FROM  alpine:3.23.3@sha256:25109184c71bdad752c8312a8623239686a9a2071e8825f20acb8f2198c3f659
+FROM  alpine:3.23.4@sha256:5b10f432ef3da1b8d4c7eb6c487f2f5a8f096bc91145e68878dd4a5019afde11
 
 # renovate: datasource=repology depName=alpine_3_23/openssl versioning=loose
 ARG   OPENSSL_VERSION="3.5.6-r0"
