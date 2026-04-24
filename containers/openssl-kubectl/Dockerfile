@@ -1,7 +1,7 @@
 # platforms: linux/amd64,linux/arm64,linux/arm/v7
 # renovate: datasource=repology depName=alpine_3_23/kubectl versioning=loose extractVersion=^(?<version>.*)-r\d+$
 # app_version: 1.34.2
-# revision: 10
+# revision: 11
 # description: Small image with kubectl and openssl designed as a helper for kubernetes hook jobs
 FROM  alpine:3.23.4@sha256:5b10f432ef3da1b8d4c7eb6c487f2f5a8f096bc91145e68878dd4a5019afde11
 
@@ -29,4 +29,5 @@ RUN   apk add --no-cache \
         prometheus=${PROMETHEUS_VERSION} \
         openssh-client=${OPENSSH_VERSION} \
       && \
-      rm -rf /var/cache/apk/*
+      rm -rf /var/cache/apk/* && \
+      rm /usr/bin/prometheus    # unneccessary 130MB
