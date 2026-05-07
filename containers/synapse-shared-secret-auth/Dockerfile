@@ -1,9 +1,9 @@
 # platforms: linux/amd64,linux/arm64
 # renovate: datasource=docker depName=ghcr.io/element-hq/synapse extractVersion=^v(?<version>.*)$
-# app_version: 1.152.0
+# app_version: 1.152.1
 # revision: 1
 # description: Matrix Synapse homeserver with matrix-synapse-shared-secret-auth preinstalled
-FROM  ghcr.io/element-hq/synapse:v1.152.0@sha256:6216aaa0a111fedc007002c0e595b2b913dc7bdfc59442d1e04b72912fa23a9c AS builder
+FROM  ghcr.io/element-hq/synapse:v1.152.1@sha256:ea13612748d2c3cd7d37314e4d2bb3833831e7fe9c1cc2ba2a05a0e51ab78297 AS builder
 
 # renovate: datasource=github-tags depName=devture/matrix-synapse-shared-secret-auth
 ARG   SHARED_SECRET_AUTH_VERSION="2.0.3"
@@ -16,6 +16,6 @@ RUN   apt update -y && \
         git+https://github.com/devture/matrix-synapse-shared-secret-auth@${SHARED_SECRET_AUTH_VERSION}
 
 
-FROM  ghcr.io/element-hq/synapse:v1.152.0@sha256:6216aaa0a111fedc007002c0e595b2b913dc7bdfc59442d1e04b72912fa23a9c
+FROM  ghcr.io/element-hq/synapse:v1.152.1@sha256:ea13612748d2c3cd7d37314e4d2bb3833831e7fe9c1cc2ba2a05a0e51ab78297
 
 COPY --from=builder /install /usr/local
