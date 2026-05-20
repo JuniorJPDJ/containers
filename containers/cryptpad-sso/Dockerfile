@@ -1,5 +1,5 @@
 # platforms: linux/amd64,linux/arm64
-# renovate: datasource=docker depName=cryptpad/cryptpad extractVersion=^version-(?<version>.*)$
+# renovate: datasource=docker depName=cryptpad/cryptpad versioning=loose extractVersion=^version-(?<version>.*)$
 # app_version: 2025.9.0
 # revision: 1
 # description: CryptPad with SSO plugin preinstalled

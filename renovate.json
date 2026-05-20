@@ -66,17 +66,23 @@
       }
     },
     {
-      "description": "Use loose versioning for cryptpad date-based tags",
+      "description": "Separate minor and major for cryptpad",
       "matchDatasources": [
         "docker"
       ],
       "matchPackageNames": [
         "cryptpad/cryptpad"
       ],
-      "versioning": "loose",
-      "extractVersion": "^version-(?<version>.*)$",
       "separateMultipleMinor": true,
       "separateMinorPatch": true
+    },
+    {
+      "description": "Use regex versioning for cryptpad tags",
+      "matchPackageNames": [
+        "cryptpad/cryptpad"
+      ],
+      "matchManagers": ["dockerfile"],
+      "versioning": "regex:^version-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
     }
   ]
 }
