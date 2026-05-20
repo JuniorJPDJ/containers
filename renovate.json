@@ -64,6 +64,19 @@
         ],
         "executionMode": "branch"
       }
+    },
+    {
+      "description": "Use loose versioning for cryptpad date-based tags",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "cryptpad/cryptpad"
+      ],
+      "versioning": "loose",
+      "extractVersion": "^version-(?<version>.*)$",
+      "separateMultipleMinor": true,
+      "separateMinorPatch": true
     }
   ]
 }
