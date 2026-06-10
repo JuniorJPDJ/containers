@@ -1,7 +1,7 @@
 # platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/386,linux/ppc64le,linux/s390x
 # renovate: datasource=docker depName=nextcloud extractVersion=^(?<version>.*)-fpm-alpine$
 # app_version: 32.0.11
-# revision: 1
+# revision: 2
 # description: Nextcloud fpm alpine image with addons (imagemagick, smb support, imap support, kerberos support)
 FROM  nextcloud:32.0.11-fpm-alpine@sha256:8b0e6709fe0bc69b62f46dfd0c986023a596c299cab06d8a0aa6a5916b7a740f
 
@@ -20,7 +20,7 @@ ARG   IMAP_VERSION="2007f-r16"
 # renovate: datasource=repology depName=alpine_3_23/krb5-dev versioning=loose
 ARG   KRB5_VERSION="1.22.1-r0"
 # renovate: datasource=repology depName=alpine_3_23/openssl-dev versioning=loose
-ARG   OPENSSL_VERSION="3.5.6-r0"
+ARG   OPENSSL_VERSION="3.5.7-r0"
 # renovate: datasource=repology depName=alpine_3_23/bzip2-dev versioning=loose
 ARG   BZIP2_VERSION="1.0.8-r6"
 
