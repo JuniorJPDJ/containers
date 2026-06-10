@@ -3,7 +3,7 @@
 # app_version: 1.34.2
 # revision: 15
 # description: Small image with kubectl and openssl designed as a helper for kubernetes hook jobs
-FROM  alpine:3.23.4@sha256:5b10f432ef3da1b8d4c7eb6c487f2f5a8f096bc91145e68878dd4a5019afde11
+FROM  alpine:3.24.0@sha256:a2d49ea686c2adfe3c992e47dc3b5e7fa6e6b5055609400dc2acaeb241c829f4
 
 # renovate: datasource=repology depName=alpine_3_23/openssl versioning=loose
 ARG   OPENSSL_VERSION="3.5.7-r0"
