@@ -55,7 +55,7 @@ on:
 jobs:
   vars:
     name: Preprocess variables
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Preprocess variables
         id: vars
@@ -193,7 +193,7 @@ jobs:
 
   merge:
     name: Merge images to multi-arch image
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       packages: write
