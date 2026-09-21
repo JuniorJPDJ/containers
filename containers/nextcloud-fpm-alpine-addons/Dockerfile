@@ -1,28 +1,20 @@
 # platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/386,linux/ppc64le,linux/s390x
 # renovate: datasource=docker depName=nextcloud extractVersion=^(?<version>.*)-fpm-alpine$
 # app_version: 32.0.14
-# revision: 2
-# description: Nextcloud fpm alpine image with addons (imagemagick, smb support, imap support, kerberos support)
+# revision: 3
+# description: Nextcloud fpm alpine image with addons (ffmpeg, smb support, imap support, kerberos support)
 FROM  nextcloud:32.0.14-fpm-alpine@sha256:da1d436568cd19d73f2a08d5f11c061e419a47f1be0f6ac29b53282086a85f58
 
 # renovate: datasource=repology depName=alpine_3_24/ffmpeg versioning=loose
 ARG   FFMPEG_VERSION="8.1.2-r0"
-# renovate: datasource=repology depName=alpine_3_24/imagemagick versioning=loose
-ARG   IMAGEMAGICK_VERSION="7.1.2.30-r0"
-# renovate: datasource=repology depName=alpine_3_24/procps-ng versioning=loose
-ARG   PROCPS_NG_VERSION="4.0.6-r0"
 # renovate: datasource=repology depName=alpine_3_24/samba-client versioning=loose
-ARG   SAMBA_CLIENT_VERSION="4.23.8-r0"
-# renovate: datasource=repology depName=alpine_3_24/supervisor versioning=loose
-ARG   SUPERVISOR_VERSION="4.3.0-r1"
+ARG   SAMBA_VERSION="4.23.8-r0"
 # renovate: datasource=repology depName=alpine_3_24/imap-dev versioning=loose
 ARG   IMAP_VERSION="2007f-r16"
 # renovate: datasource=repology depName=alpine_3_24/krb5-dev versioning=loose
 ARG   KRB5_VERSION="1.22.2-r1"
 # renovate: datasource=repology depName=alpine_3_24/openssl-dev versioning=loose
 ARG   OPENSSL_VERSION="3.5.8-r0"
-# renovate: datasource=repology depName=alpine_3_24/bzip2-dev versioning=loose
-ARG   BZIP2_VERSION="1.0.8-r6"
 
 
 COPY  fpm.conf /usr/local/etc/php-fpm.d/z_nextcloud_fpm.conf
@@ -31,10 +23,7 @@ COPY  php.ini /usr/local/etc/php/conf.d/z_nextcloud_php.ini
 RUN   set -ex; \
       apk add --no-cache \
         ffmpeg=${FFMPEG_VERSION} \
-        imagemagick=${IMAGEMAGICK_VERSION} \
-        procps-ng=${PROCPS_NG_VERSION} \
-        samba-client=${SAMBA_CLIENT_VERSION} \
-        supervisor=${SUPERVISOR_VERSION}
+        samba-client=${SAMBA_VERSION}
 
 RUN   set -ex; \
       apk add --no-cache --virtual .build-deps \
@@ -42,12 +31,10 @@ RUN   set -ex; \
         imap-dev=${IMAP_VERSION} \
         krb5-dev=${KRB5_VERSION} \
         openssl-dev=${OPENSSL_VERSION} \
-        samba-dev \
-        bzip2-dev=${BZIP2_VERSION} \
+        samba-dev=${SAMBA_VERSION} \
       && \
       docker-php-ext-configure imap --with-kerberos --with-imap-ssl && \
       docker-php-ext-install \
-        bz2 \
         imap \
       && \
       pecl install smbclient && \
