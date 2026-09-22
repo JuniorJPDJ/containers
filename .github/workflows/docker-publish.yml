@@ -71,3 +71,33 @@ jobs:
       image-name: ${{ github.repository }}/${{ matrix.container }}
     secrets:
       registry-password: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    name: "Release container: ${{ matrix.container }}"
+    needs: [list_containers, build]
+    if: github.event_name == 'push' && needs.list_containers.outputs.matrix != '[]'
+    permissions:
+      contents: write
+    concurrency:
+      group: ${{ github.workflow }}-release-${{ matrix.container }}
+      cancel-in-progress: false
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.list_containers.outputs.matrix) }}
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: '0'
+          fetch-tags: true
+
+      - name: Create release for the published version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 scripts/create_release.py \
+            "${{ matrix.container }}" \
+            "${{ matrix.app_version }}" \
+            "${{ matrix.revision }}"
