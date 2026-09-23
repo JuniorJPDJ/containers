@@ -17,6 +17,7 @@ jobs:
           fetch-depth: '0'
 
       - name: Verify changes and versions
+        continue-on-error: true
         run: |
           GIT_DIFF_BASE='${{ github.event.pull_request.base.sha }}'
           GIT_DIFF_HEAD='${{ github.event.pull_request.head.sha }}'

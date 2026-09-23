@@ -6,7 +6,6 @@ on:
       - 'master'
   pull_request:
     types: [opened, reopened, synchronize]
-  workflow_dispatch:
 
 jobs:
   list_containers:
@@ -14,6 +13,7 @@ jobs:
     runs-on: ubuntu-26.04
     outputs:
       matrix: ${{ steps.set-matrix.outputs.MATRIX }}
+      release_matrix: ${{ steps.set-matrix.outputs.RELEASE_MATRIX }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -23,21 +23,31 @@ jobs:
       - name: Generate containers list with parameters
         id: set-matrix
         run: |
-          GIT_DIFF_ENABLED=0
+          GIT_DIFF_ENABLED=1
+          GIT_DIFF_BASE=''
+          GIT_DIFF_HEAD=''
+          SKIP_UNBUMPED=0
 
           if [ '${{ github.event_name }}' = 'push' ] ; then
-            GIT_DIFF_ENABLED=1
             GIT_DIFF_BASE='${{ github.event.before }}'
             GIT_DIFF_HEAD='${{ github.event.after }}'
+            SKIP_UNBUMPED=1
           elif [ '${{ github.event_name }}' = 'pull_request' ] ; then
-            GIT_DIFF_ENABLED=1
             GIT_DIFF_BASE='${{ github.event.pull_request.base.sha }}'
             GIT_DIFF_HEAD='${{ github.event.pull_request.head.sha }}'
           fi
 
+          MATRIX_FILE="$(mktemp)"
+          ./scripts/grab_props.sh "$GIT_DIFF_ENABLED" "$GIT_DIFF_BASE" "$GIT_DIFF_HEAD" "$SKIP_UNBUMPED" \
+            | yq -p yaml -o json > "$MATRIX_FILE"
+
           {
             echo "MATRIX<<9743a66f914cc249efca164485a19c5c"
-            ./scripts/grab_props.sh "$GIT_DIFF_ENABLED" "$GIT_DIFF_BASE" "$GIT_DIFF_HEAD" | yq -p yaml -o json -I 0 .
+            yq -p yaml -o json -I 0 '.' "$MATRIX_FILE"
+            echo 9743a66f914cc249efca164485a19c5c
+
+            echo "RELEASE_MATRIX<<9743a66f914cc249efca164485a19c5c"
+            yq -p yaml -o json -I 0 '[.[] | select(.push != "false")]' "$MATRIX_FILE"
             echo 9743a66f914cc249efca164485a19c5c
           } >> "$GITHUB_OUTPUT"
 
@@ -66,6 +76,7 @@ jobs:
       app-version: ${{ matrix.app_version }}
       revision: ${{ matrix.revision }}
       platforms: ${{ matrix.platforms }}
+      push: ${{ matrix.push != 'false' }}
       registry: ghcr.io
       registry-username: ${{ github.actor }}
       image-name: ${{ github.repository }}/${{ matrix.container }}
@@ -75,7 +86,7 @@ jobs:
   release:
     name: "Release container: ${{ matrix.container }}"
     needs: [list_containers, build]
-    if: github.event_name == 'push' && needs.list_containers.outputs.matrix != '[]'
+    if: github.event_name == 'push' && needs.list_containers.outputs.release_matrix != '[]'
     permissions:
       contents: write
     concurrency:
@@ -84,7 +95,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(needs.list_containers.outputs.matrix) }}
+        include: ${{ fromJSON(needs.list_containers.outputs.release_matrix) }}
     runs-on: ubuntu-26.04
     steps:
       - name: Checkout repository
