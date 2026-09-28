@@ -2,7 +2,7 @@
 # renovate: datasource=docker depName=nextcloud extractVersion=^(?<version>.*)-fpm-alpine$
 # app_version: 33.0.9
 # revision: 1
-# description: Nextcloud fpm alpine image with addons (ffmpeg, smb support, imap support, kerberos support)
+# description: Nextcloud fpm alpine image with addons (ffmpeg, smb support, imap support)
 FROM  nextcloud:33.0.9-fpm-alpine@sha256:c12cb3496e6fdeeb94abb8b5d69567f357443cd812837230f8967722535ad24e
 
 # renovate: datasource=repology depName=alpine_3_24/ffmpeg versioning=loose
@@ -33,10 +33,8 @@ RUN   set -ex; \
         openssl-dev=${OPENSSL_VERSION} \
         samba-dev=${SAMBA_VERSION} \
       && \
-      docker-php-ext-configure imap --with-kerberos --with-imap-ssl && \
-      docker-php-ext-install \
-        imap \
-      && \
+      pecl install imap && \
+      docker-php-ext-enable imap && \
       pecl install smbclient && \
       docker-php-ext-enable smbclient && \
       runDeps="$( \
