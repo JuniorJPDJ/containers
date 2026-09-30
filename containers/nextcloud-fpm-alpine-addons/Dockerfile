@@ -1,7 +1,7 @@
 # platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/386,linux/ppc64le,linux/s390x
 # renovate: datasource=docker depName=nextcloud extractVersion=^(?<version>.*)-fpm-alpine$
 # app_version: 33.0.9
-# revision: 1
+# revision: 2
 # description: Nextcloud fpm alpine image with addons (ffmpeg, smb support, imap support)
 FROM  nextcloud:33.0.9-fpm-alpine@sha256:c12cb3496e6fdeeb94abb8b5d69567f357443cd812837230f8967722535ad24e
 
@@ -14,7 +14,7 @@ ARG   IMAP_VERSION="2007f-r16"
 # renovate: datasource=repology depName=alpine_3_24/krb5-dev versioning=loose
 ARG   KRB5_VERSION="1.22.2-r1"
 # renovate: datasource=repology depName=alpine_3_24/openssl-dev versioning=loose
-ARG   OPENSSL_VERSION="3.5.8-r0"
+ARG   OPENSSL_VERSION="3.5.9-r0"
 
 
 COPY  fpm.conf /usr/local/etc/php-fpm.d/z_nextcloud_fpm.conf
