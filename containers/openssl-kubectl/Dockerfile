@@ -1,7 +1,7 @@
 # platforms: linux/amd64,linux/arm64,linux/arm/v7
 # renovate: datasource=repology depName=alpine_3_24/kubectl versioning=loose extractVersion=^(?<version>.*)-r\d+$
 # app_version: 1.36.1
-# revision: 7
+# revision: 8
 # description: Small image with kubectl and openssl designed as a helper for kubernetes hook jobs
 FROM  alpine:3.24.3@sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a
 
@@ -18,7 +18,7 @@ ARG   BASH_VERSION="5.3.9-r1"
 # renovate: datasource=repology depName=alpine_3_24/prometheus versioning=loose
 ARG   PROMETHEUS_VERSION="3.5.3-r3"
 # renovate: datasource=repology depName=alpine_3_24/openssh versioning=loose
-ARG   OPENSSH_VERSION="10.3_p1-r1"
+ARG   OPENSSH_VERSION="10.3_p1-r2"
 # renovate: datasource=repology depName=alpine_3_24/coreutils versioning=loose
 ARG   COREUTILS_VERSION="9.11-r0"
 
