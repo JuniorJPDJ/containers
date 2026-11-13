@@ -8,4 +8,8 @@ FROM  cryptpad/cryptpad:version-2026.5.1@sha256:1f89dcdd28c1375f675e47b1d0cf07a5
 # renovate: datasource=github-tags depName=cryptpad/sso
 ARG   CRYPTPAD_SSO_PLUGIN_VERSION="1.0.0"
 
-ADD   https://github.com/cryptpad/sso.git#${CRYPTPAD_SSO_PLUGIN_VERSION} lib/plugins/sso
+ADD   --chown=cryptpad:cryptpad \
+      https://github.com/cryptpad/sso.git#${CRYPTPAD_SSO_PLUGIN_VERSION} lib/plugins/sso
+RUN   cd lib/plugins/sso && \
+      npm ci --omit=dev && \
+      rm -rf /cryptpad/.npm
